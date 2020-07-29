@@ -154,7 +154,7 @@ func main() {
 			Name: "sms",
 			Action: func(c *cli.Context) error {
 				//phone = phoneCode + phoneNumber
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendSMS(context.Background(), "20007", "hello pigeon sdk sms test 001", []string{"8613386016339"})
+				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendSMS(context.Background(), "20007", "", "hello pigeon sdk sms test 001", []string{"8613386016339"})
 			},
 		},
 	}

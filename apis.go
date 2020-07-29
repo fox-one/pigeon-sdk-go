@@ -28,7 +28,7 @@ func (sdk *SDK) requestWithBasicAuth(ctx context.Context) *resty.Request {
 	return fhttp.Request(ctx).SetBasicAuth(sdk.AppKey, sdk.AppSecret)
 }
 
-func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phoneNumbers []string) error {
+func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string, phoneNumbers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/sms", sdk.BaseURL, appID)
 
 	var req struct {

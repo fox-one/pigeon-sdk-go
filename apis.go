@@ -49,14 +49,16 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phone
 	return nil
 }
 
-func (sdk *SDK) SendMixinText(ctx context.Context, appID string, text string, receivers ...string) error {
+func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text string, receivers ...string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/text", sdk.BaseURL, appID)
 
 	var req struct {
 		Text      string   `json:"text"`
+		MessageID string   `json:"message_id,omitempty"`
 		Receivers []string `json:"receivers,omitempty"`
 	}
 	req.Text = text
+	req.MessageID = msgID
 	req.Receivers = receivers
 
 	var okResp models.OkResponse
@@ -70,14 +72,16 @@ func (sdk *SDK) SendMixinText(ctx context.Context, appID string, text string, re
 	return nil
 }
 
-func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, post string, receivers ...string) error {
+func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post string, receivers ...string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/post", sdk.BaseURL, appID)
 
 	var req struct {
 		Text      string   `json:"text"`
+		MessageID string   `json:"message_id,omitempty"`
 		Receivers []string `json:"receivers,omitempty"`
 	}
 	req.Text = post
+	req.MessageID = msgID
 	req.Receivers = receivers
 
 	var okResp models.OkResponse
@@ -175,14 +179,16 @@ func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, mixinUserID 
 	return nil
 }
 
-func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, buttons []*models.MsgButton, receivers ...string) error {
+func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID string, buttons []*models.MsgButton, receivers ...string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/buttongroup", sdk.BaseURL, appID)
 
 	var req struct {
 		Buttons   []*models.MsgButton `json:"buttons"`
+		MessageID string              `json:"message_id,omitempty"`
 		Receivers []string            `json:"receivers,omitempty"`
 	}
 	req.Buttons = buttons
+	req.MessageID = msgID
 	req.Receivers = receivers
 
 	var okResp models.OkResponse
@@ -234,13 +240,6 @@ func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []
 	}
 
 	req.Items = items
-
-	// reqb, reqE := json.Marshal(&req)
-	// if reqE != nil {
-	// 	return reqE
-	// }
-
-	// fmt.Println(string(reqb))
 
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse

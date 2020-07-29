@@ -29,8 +29,9 @@ func (t Post) Body() interface{} {
 }
 
 type Sticker struct {
-	Name    string `json:"name"`
-	AlbumID string `json:"album_id"`
+	Name      string `json:"name"`
+	AlbumID   string `json:"album_id"`
+	MessageID string `json:"message_id,omitempty"`
 }
 
 func (t Sticker) Type() string {
@@ -58,6 +59,7 @@ type Location struct {
 	Latitude  decimal.Decimal `json:"latitude"`
 	Name      string          `json:"name"`
 	Address   string          `json:"address"`
+	MessageID string          `json:"message_id,omitempty"`
 }
 
 func (t Location) Type() string {
@@ -69,10 +71,11 @@ func (t Location) Body() interface{} {
 }
 
 type Live struct {
-	Width    decimal.Decimal `json:"width"`
-	Height   decimal.Decimal `json:"height"`
-	ThumbURL string          `json:"thumb_url"`
-	URL      string          `json:"url"`
+	Width     decimal.Decimal `json:"width"`
+	Height    decimal.Decimal `json:"height"`
+	ThumbURL  string          `json:"thumb_url"`
+	URL       string          `json:"url"`
+	MessageID string          `json:"message_id,omitempty"`
 }
 
 func (t Live) Type() string {
@@ -88,6 +91,7 @@ type AppCard struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Action      string `json:"action"`
+	MessageID   string `json:"message_id,omitempty"`
 }
 
 func (t AppCard) Type() string {
@@ -104,7 +108,10 @@ type MsgButton struct {
 	Action string `json:"action"`
 }
 
-type ButtongGroup []*MsgButton
+type ButtongGroup struct {
+	Buttons   []*MsgButton `json:"buttons"`
+	MessageID string       `json:"message_id,omitempty"`
+}
 
 func (t ButtongGroup) Type() string {
 	return MsgTypeButtongroup

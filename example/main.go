@@ -27,7 +27,7 @@ func main() {
 		{
 			Name: "text",
 			Action: func(c *cli.Context) error {
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinText(context.Background(), "30002", "hello pigeon sdk", "8be122b4-596f-4e4f-a307-978bed0ffb75")
+				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinText(context.Background(), "20007", "hello pigeon sdk", "8be122b4-596f-4e4f-a307-978bed0ffb75")
 			},
 		},
 		{
@@ -152,7 +152,7 @@ func main() {
 			Name: "sms",
 			Action: func(c *cli.Context) error {
 				//phone = phoneCode + phoneNumber
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendSMS(context.Background(), "30002", "hello pigeon sdk sms test 001", "8613386016339")
+				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendSMS(context.Background(), "20007", "hello pigeon sdk sms test 001", "8613386016339")
 			},
 		},
 	}

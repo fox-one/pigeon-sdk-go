@@ -28,7 +28,7 @@ func (sdk *SDK) requestWithBasicAuth(ctx context.Context) *resty.Request {
 	return fhttp.Request(ctx).SetBasicAuth(sdk.AppKey, sdk.AppSecret)
 }
 
-func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phoneNumber ...string) error {
+func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phoneNumbers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/sms", sdk.BaseURL, appID)
 
 	var req struct {
@@ -36,7 +36,7 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phone
 		Phones  []string `json:"phones,omitempty"`
 	}
 	req.Content = content
-	req.Phones = phoneNumber
+	req.Phones = phoneNumbers
 
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
@@ -49,7 +49,7 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, content string, phone
 	return nil
 }
 
-func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text string, receivers ...string) error {
+func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text string, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/text", sdk.BaseURL, appID)
 
 	var req struct {
@@ -72,7 +72,7 @@ func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text str
 	return nil
 }
 
-func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post string, receivers ...string) error {
+func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post string, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/post", sdk.BaseURL, appID)
 
 	var req struct {
@@ -95,7 +95,7 @@ func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post str
 	return nil
 }
 
-func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *models.Sticker, receivers ...string) error {
+func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *models.Sticker, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/sticker", sdk.BaseURL, appID)
 
 	var req struct {
@@ -116,7 +116,7 @@ func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *mod
 	return nil
 }
 
-func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *models.Location, receivers ...string) error {
+func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *models.Location, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/location", sdk.BaseURL, appID)
 
 	var req struct {
@@ -137,7 +137,7 @@ func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *m
 	return nil
 }
 
-func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Live, receivers ...string) error {
+func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Live, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/live", sdk.BaseURL, appID)
 
 	var req struct {
@@ -158,14 +158,16 @@ func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Li
 	return nil
 }
 
-func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, mixinUserID string, receivers ...string) error {
+func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, msgID, mixinUserID string, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/contact", sdk.BaseURL, appID)
 
 	var req struct {
 		UserID    string   `json:"user_id"`
+		MessageID string   `json:"message_id"`
 		Receivers []string `json:"receivers,omitempty"`
 	}
 	req.UserID = mixinUserID
+	req.MessageID = msgID
 	req.Receivers = receivers
 
 	var okResp models.OkResponse
@@ -179,7 +181,7 @@ func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, mixinUserID 
 	return nil
 }
 
-func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID string, buttons []*models.MsgButton, receivers ...string) error {
+func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID string, buttons []*models.MsgButton, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/buttongroup", sdk.BaseURL, appID)
 
 	var req struct {
@@ -202,7 +204,7 @@ func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID st
 	return nil
 }
 
-func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *models.AppCard, receivers ...string) error {
+func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *models.AppCard, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/appcard", sdk.BaseURL, appID)
 
 	var req struct {
@@ -223,7 +225,7 @@ func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *mod
 	return nil
 }
 
-func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []models.IMixinMsg, receivers ...string) error {
+func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []models.IMixinMsg, receivers []string) error {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/more", sdk.BaseURL, appID)
 
 	var req struct {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/fox-one/pigeon/fhttp"
-	"github.com/fox-one/pigeon/models"
+	"github.com/fox-one/pigeon-sdk-go/fhttp"
+	"github.com/fox-one/pigeon-sdk-go/models"
 	"github.com/go-resty/resty/v2"
 )
 

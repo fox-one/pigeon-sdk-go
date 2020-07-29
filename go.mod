@@ -1,4 +1,4 @@
-module github.com/fox-one/pigeon
+module github.com/fox-one/pigeon-sdk-go
 
 go 1.14
 

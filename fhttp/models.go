@@ -3,7 +3,7 @@ package fhttp
 import (
 	"context"
 
-	"github.com/fox-one/pigeon/utils/id"
+	"github.com/fox-one/pigeon-sdk-go/utils/id"
 )
 
 const (

@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/fox-one/pigeon"
-	"github.com/fox-one/pigeon/models"
+	"github.com/fox-one/pigeon-sdk-go"
+	"github.com/fox-one/pigeon-sdk-go/models"
 	"github.com/shopspring/decimal"
 	"github.com/urfave/cli/v2"
 )

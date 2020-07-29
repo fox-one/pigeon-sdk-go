@@ -32,8 +32,9 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string
 	url := fmt.Sprintf("%s/apps/%s/sms", sdk.BaseURL, appID)
 
 	var req struct {
-		Content string   `json:"content"`
-		Phones  []string `json:"phones,omitempty"`
+		Content   string   `json:"content"`
+		MessageID string   `json:"message_id"`
+		Phones    []string `json:"phones,omitempty"`
 	}
 	req.Content = content
 	req.Phones = phoneNumbers

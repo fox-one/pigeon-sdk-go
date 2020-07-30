@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -10,10 +11,23 @@ import (
 	"github.com/fox-one/pigeon-sdk-go/models"
 	"github.com/shopspring/decimal"
 	"github.com/urfave/cli/v2"
+	"gopkg.in/yaml.v2"
 )
 
 func main() {
 	fmt.Println("Hello pigeon")
+
+	configContent, err := ioutil.ReadFile("config.yml")
+	if err != nil {
+		return
+	}
+
+	appConfig := new(Config)
+	err = yaml.Unmarshal(configContent, appConfig)
+
+	if err != nil {
+		return
+	}
 
 	app := cli.NewApp()
 
@@ -21,19 +35,19 @@ func main() {
 		{
 			Name: "all",
 			Action: func(c *cli.Context) error {
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinText(context.Background(), "30002", "", "hello pigeon sdk", []string{"*"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "", "hello pigeon sdk", []string{"*"})
 			},
 		},
 		{
 			Name: "text",
 			Action: func(c *cli.Context) error {
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinText(context.Background(), "30002", "", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
 			Name: "post",
 			Action: func(c *cli.Context) error {
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinPost(context.Background(), "30002", "", "## hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinPost(context.Background(), "30002", "", "## hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -43,7 +57,7 @@ func main() {
 					Name:    "124",
 					AlbumID: "123123",
 				}
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinSticker(context.Background(), "30002", &sticker, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinSticker(context.Background(), "30002", &sticker, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -55,7 +69,7 @@ func main() {
 					Name:      "ShangHai",
 					Address:   "ShangHai, China",
 				}
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinLocation(context.Background(), "30002", &location, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinLocation(context.Background(), "30002", &location, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -67,13 +81,13 @@ func main() {
 					ThumbURL: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2689960828,3272559041&fm=26&gp=0.jpg",
 					URL:      "rtmp://live.hkstv.hk.lxdns.com/live/hks",
 				}
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinLive(context.Background(), "30002", &live, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinLive(context.Background(), "30002", &live, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
 			Name: "contact",
 			Action: func(c *cli.Context) error {
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinContact(context.Background(), "30002", "", "8be122b4-596f-4e4f-a307-978bed0ffb75", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinContact(context.Background(), "30002", "", "8be122b4-596f-4e4f-a307-978bed0ffb75", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -91,7 +105,7 @@ func main() {
 						Action: "https://www.fox.one",
 					},
 				}
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinButtonGroup(context.Background(), "30002", "", buttons, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinButtonGroup(context.Background(), "30002", "", buttons, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -103,7 +117,7 @@ func main() {
 					Description: "test description 001 ..........................",
 					Action:      "https://www.fox.one",
 				}
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinAppcard(context.Background(), "30002", &appcard, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinAppcard(context.Background(), "30002", &appcard, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
@@ -147,14 +161,14 @@ func main() {
 					appcard,
 				}
 
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendMixinMultiMsg(context.Background(), "30002", multiMsg, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinMultiMsg(context.Background(), "30002", multiMsg, []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
 			},
 		},
 		{
 			Name: "sms",
 			Action: func(c *cli.Context) error {
 				//phone = phoneCode + phoneNumber
-				return pigeon.New("http://47.103.148.221:8130", "eddb032c1ac447e7abb287d5a0a50ef5", "eddb032c1ac447e7abb287d5a0a50ef5").SendSMS(context.Background(), "20007", "10f470d6-651a-4b24-be1e-9fcdf11c4e01", "hello pigeon sdk sms test 001", []string{"8613386016339"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendSMS(context.Background(), "20007", "10f470d6-651a-4b24-be1e-9fcdf11c4e01", "hello pigeon sdk sms test 001", []string{"8613386016339"})
 			},
 		},
 	}
@@ -162,4 +176,10 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
+}
+
+type Config struct {
+	Host   string `yaml:"host"`
+	Key    string `yaml:"key"`
+	Secret string `yaml:"secret"`
 }

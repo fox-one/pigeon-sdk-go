@@ -33,10 +33,11 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string
 
 	var req struct {
 		Content   string   `json:"content"`
-		MessageID string   `json:"message_id"`
+		MessageID string   `json:"message_id,omitempty"`
 		Phones    []string `json:"phones,omitempty"`
 	}
 	req.Content = content
+	req.MessageID = msgID
 	req.Phones = phoneNumbers
 
 	var okResp models.OkResponse

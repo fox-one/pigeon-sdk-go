@@ -5,7 +5,8 @@ import (
 )
 
 type Text struct {
-	Text string `json:"text"`
+	Text      string `json:"text"`
+	MessageID string `json:"message_id,omitempty"`
 }
 
 func (t Text) Type() string {
@@ -17,7 +18,8 @@ func (t Text) Body() interface{} {
 }
 
 type Post struct {
-	Text string `json:"text"`
+	Text      string `json:"text"`
+	MessageID string `json:"message_id,omitempty"`
 }
 
 func (t Post) Type() string {
@@ -43,7 +45,8 @@ func (t Sticker) Body() interface{} {
 }
 
 type Contact struct {
-	UserID string `json:"user_id"`
+	UserID    string `json:"user_id"`
+	MessageID string `json:"message_id,omitempty"`
 }
 
 func (t Contact) Type() string {

@@ -7,4 +7,5 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/shopspring/decimal v1.2.0
 	github.com/urfave/cli/v2 v2.2.0 // indirect
+	gopkg.in/yaml.v2 v2.2.2
 )

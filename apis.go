@@ -2,7 +2,6 @@ package pigeon
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/fox-one/pigeon-sdk-go/fhttp"
@@ -14,6 +13,15 @@ type SDK struct {
 	AppKey    string
 	AppSecret string
 	BaseURL   string
+}
+
+type MsgError struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+func (m MsgError) Error() string {
+	return m.Msg
 }
 
 func New(baseURL, appKey, appSecret string) *SDK {
@@ -28,7 +36,7 @@ func (sdk *SDK) requestWithBasicAuth(ctx context.Context) *resty.Request {
 	return fhttp.Request(ctx).SetBasicAuth(sdk.AppKey, sdk.AppSecret)
 }
 
-func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string, phoneNumbers []string) error {
+func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string, phoneNumbers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/sms", sdk.BaseURL, appID)
 
 	var req struct {
@@ -45,13 +53,13 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send sms error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text string, receivers []string) error {
+func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text string, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/text", sdk.BaseURL, appID)
 
 	var req struct {
@@ -68,13 +76,13 @@ func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text str
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post string, receivers []string) error {
+func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post string, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/post", sdk.BaseURL, appID)
 
 	var req struct {
@@ -91,13 +99,13 @@ func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post str
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *models.Sticker, receivers []string) error {
+func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *models.Sticker, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/sticker", sdk.BaseURL, appID)
 
 	var req struct {
@@ -112,13 +120,13 @@ func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *mod
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *models.Location, receivers []string) error {
+func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *models.Location, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/location", sdk.BaseURL, appID)
 
 	var req struct {
@@ -133,13 +141,13 @@ func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *m
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Live, receivers []string) error {
+func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Live, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/live", sdk.BaseURL, appID)
 
 	var req struct {
@@ -154,13 +162,13 @@ func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Li
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, msgID, mixinUserID string, receivers []string) error {
+func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, msgID, mixinUserID string, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/contact", sdk.BaseURL, appID)
 
 	var req struct {
@@ -177,13 +185,13 @@ func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, msgID, mixin
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID string, buttons []*models.MsgButton, receivers []string) error {
+func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID string, buttons []*models.MsgButton, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/buttongroup", sdk.BaseURL, appID)
 
 	var req struct {
@@ -200,13 +208,13 @@ func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID st
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *models.AppCard, receivers []string) error {
+func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *models.AppCard, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/appcard", sdk.BaseURL, appID)
 
 	var req struct {
@@ -221,13 +229,13 @@ func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *mod
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil
 }
 
-func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []models.IMixinMsg, receivers []string) error {
+func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []models.IMixinMsg, receivers []string) *MsgError {
 	url := fmt.Sprintf("%s/apps/%s/mixin/msg/more", sdk.BaseURL, appID)
 
 	var req struct {
@@ -250,7 +258,7 @@ func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
 	if e != nil || errResp.Code != models.SuccessCode {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
-		return errors.New("send mixin text error")
+		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
 
 	return nil

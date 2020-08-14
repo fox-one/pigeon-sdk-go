@@ -17,8 +17,9 @@ import (
 func main() {
 	fmt.Println("Hello pigeon")
 
-	configContent, err := ioutil.ReadFile("config.yml")
+	configContent, err := ioutil.ReadFile("./example/config.yml")
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
@@ -26,6 +27,7 @@ func main() {
 	err = yaml.Unmarshal(configContent, appConfig)
 
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
@@ -41,7 +43,10 @@ func main() {
 		{
 			Name: "text",
 			Action: func(c *cli.Context) error {
-				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				fmt.Println("hello text mixin message")
+				result := pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "8fafaf8b-4518-4f00-bdd8-8aea4bfb5e06", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				fmt.Println(result)
+				return result
 			},
 		},
 		{
@@ -168,7 +173,7 @@ func main() {
 			Name: "sms",
 			Action: func(c *cli.Context) error {
 				//phone = phoneCode + phoneNumber
-				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendSMS(context.Background(), "20007", "10f470d6-651a-4b24-be1e-9fcdf11c4e01", "hello pigeon sdk sms test 001", []string{"8613386016339"})
+				return pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendSMS(context.Background(), "30002", "", "hello pigeon sdk sms test 001", []string{"8613386016339"})
 			},
 		},
 	}

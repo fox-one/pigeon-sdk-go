@@ -17,7 +17,7 @@ import (
 func main() {
 	fmt.Println("Hello pigeon")
 
-	configContent, err := ioutil.ReadFile("./example/config.yml")
+	configContent, err := ioutil.ReadFile("./config.yml")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -44,8 +44,8 @@ func main() {
 			Name: "text",
 			Action: func(c *cli.Context) error {
 				fmt.Println("hello text mixin message")
-				result := pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "8fafaf8b-4518-4f00-bdd8-8aea4bfb5e06", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
-				fmt.Println(result)
+				result := pigeon.New(appConfig.Host, appConfig.Key, appConfig.Secret).SendMixinText(context.Background(), "30002", "f4ad4018-7a1d-4c55-a713-f676f6551c46", "hello pigeon sdk", []string{"8be122b4-596f-4e4f-a307-978bed0ffb75"})
+				fmt.Println("text msg result:", result)
 				return result
 			},
 		},

@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/fox-one/pigeon-sdk-go/models"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -50,7 +51,7 @@ func RequestWithID(ctx context.Context, requestID string) *resty.Request {
 	return Request(ctx).SetHeader(HeaderKeyRequestID, requestID)
 }
 
-func Execute(request *resty.Request, method, url string, body interface{}, resp interface{}, errResp interface{}) (int, error) {
+func Execute(request *resty.Request, method, url string, body interface{}, resp interface{}) (int, models.Err) {
 	fmt.Printf("url:%s\n", url)
 
 	if body != nil {
@@ -59,19 +60,16 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 
 	r, err := request.Execute(strings.ToUpper(method), url)
 	if err != nil {
-		return r.StatusCode(), err
+		return r.StatusCode(), models.NewErr(-1, err.Error())
 	}
 
-	return r.StatusCode(), ParseResponse(r, resp, errResp)
+	return r.StatusCode(), ParseResponse(r, resp)
 }
 
-func ParseResponse(r *resty.Response, obj interface{}, errorObj interface{}) error {
+func ParseResponse(r *resty.Response, obj interface{}) models.Err {
 	//fail
 	if !r.IsSuccess() {
-		if errorObj != nil {
-			json.Unmarshal(r.Body(), errorObj)
-		}
-		return fmt.Errorf(string(r.Body()))
+		return models.NewErrWithBytes(r.Body())
 	}
 
 	//success
@@ -79,7 +77,7 @@ func ParseResponse(r *resty.Response, obj interface{}, errorObj interface{}) err
 		e := json.Unmarshal(r.Body(), obj)
 		if e != nil {
 			fmt.Printf("parseResponse:%s", e.Error())
-			return e
+			return models.NewErr(-1, e.Error())
 		}
 		return nil
 	}
@@ -102,23 +100,4 @@ func (e *FError) Error() string {
 		return je.Error()
 	}
 	return string(b)
-}
-
-func ParseDataWrapperResponse(r *resty.Response, obj interface{}) error {
-	var dataWrapperResp DataWrapperResponse
-	err := ParseResponse(r, &dataWrapperResp, &dataWrapperResp.FError)
-	if err != nil {
-		return err
-	}
-
-	if dataWrapperResp.Data != nil && obj != nil {
-		err = json.Unmarshal(*dataWrapperResp.Data, obj)
-		if err != nil {
-			return err
-		}
-
-		return nil
-	}
-
-	return nil
 }

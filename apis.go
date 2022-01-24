@@ -51,7 +51,7 @@ func (sdk *SDK) SendSMS(ctx context.Context, appID string, msgID, content string
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -74,7 +74,7 @@ func (sdk *SDK) SendMixinText(ctx context.Context, appID string, msgID, text str
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -97,7 +97,7 @@ func (sdk *SDK) SendMixinPost(ctx context.Context, appID string, msgID, post str
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -118,7 +118,7 @@ func (sdk *SDK) SendMixinSticker(ctx context.Context, appID string, sticker *mod
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -139,7 +139,7 @@ func (sdk *SDK) SendMixinLocation(ctx context.Context, appID string, location *m
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -160,7 +160,7 @@ func (sdk *SDK) SendMixinLive(ctx context.Context, appID string, live *models.Li
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -183,7 +183,7 @@ func (sdk *SDK) SendMixinContact(ctx context.Context, appID string, msgID, mixin
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -206,7 +206,7 @@ func (sdk *SDK) SendMixinButtonGroup(ctx context.Context, appID string, msgID st
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -227,7 +227,7 @@ func (sdk *SDK) SendMixinAppcard(ctx context.Context, appID string, appcard *mod
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
@@ -256,7 +256,7 @@ func (sdk *SDK) SendMixinMultiMsg(ctx context.Context, appID string, messages []
 	var okResp models.OkResponse
 	var errResp models.ErrorResponse
 	_, e := fhttp.Execute(sdk.requestWithBasicAuth(ctx), "POST", url, &req, &okResp, &errResp)
-	if e != nil || errResp.Code != models.SuccessCode {
+	if e != nil || !errResp.IsSuccessful() {
 		fmt.Println(url, ":error:", e, "code:", errResp.Code, ";msg:", errResp.Message)
 		return &MsgError{Code: errResp.Code, Msg: errResp.Message}
 	}
